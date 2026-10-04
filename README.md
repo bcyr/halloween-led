@@ -44,7 +44,6 @@ Avec les réglages par défaut (8 scènes × 15 s), un cycle complet dure 2 minu
 | Bande de 100 LED WS2812B | Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
 | Alimentation 5 V | Prévoir environ 3 à 4 A pour 100 LED à la luminosité par défaut |
 | Câble USB-C | Programmation et alimentation de la carte |
-| *(Optionnel)* 74AHCT125 ou 74HCT125 | Adaptateur de niveau 3,3 V → 5 V pour le signal de données |
 | *(Recommandé)* Résistance 330 Ω | En série sur la ligne de données |
 | *(Recommandé)* Condensateur 1000 µF | Entre +5 V et GND, au début de la bande |
 
@@ -61,9 +60,8 @@ GND     ──────────────────── GND ──�
 
 - La broche de données est **GPIO 4** (modifiable via `DATA_PIN`).
 - **Les masses (GND) de la carte et de l'alimentation doivent être reliées.**
-- L'ESP32-S3 sort un signal de 3,3 V. Beaucoup de bandes l'acceptent, mais si la
-  bande reste éteinte ou clignote au hasard, ajoutez un 74AHCT125 alimenté en 5 V
-  sur la ligne de données.
+- La bande est branchée directement sur la carte : le signal de 3,3 V de l'ESP32-S3
+  suffit pour la bande utilisée.
 - Évitez d'alimenter 100 LED par la broche 5 V de la carte : utilisez une
   alimentation externe adaptée.
 
@@ -201,7 +199,7 @@ curl "http://halloween.local/set?lock=4"
 
 | Symptôme | Piste |
 |----------|-------|
-| La bande reste éteinte | Vérifier la masse commune, la broche `DATA_PIN`, le sens de la bande (DIN et non DOUT), puis essayer un adaptateur de niveau 74AHCT125 |
+| La bande reste éteinte | Vérifier la masse commune, la broche `DATA_PIN`, le sens de la bande (DIN et non DOUT) |
 | Couleurs inversées | Changer `COLOR_ORDER` |
 | OLED noir | L'OLED est alimenté par `Vext` (GPIO 36), mis à `LOW` dans `setup()` |
 | « WiFi: connexion... » reste affiché | Vérifier `secrets.h` et que le réseau est en 2,4 GHz |

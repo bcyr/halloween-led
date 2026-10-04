@@ -1,6 +1,6 @@
 # 🎃 Halloween LED
 
-Un spectacle d'Halloween pour une bande de 100 LED adressables **WS2815** (12 V), piloté par une carte
+Un spectacle d'Halloween pour une bande **WS2811** (12 V) de 300 LED, soit 100 pixels adressables, piloté par une carte
 **Heltec WiFi LoRa 32 V3** (ESP32-S3) avec écran OLED intégré et une interface web
 pour tout contrôler depuis un téléphone.
 
@@ -13,7 +13,7 @@ aperçu en direct de la bande.
 
 - **8 scènes animées** (voir le tableau plus bas), avec fondu enchaîné entre les scènes
 - **Interface web** sur `http://halloween.local` (ou l'adresse IP affichée sur l'OLED)
-  - aperçu en direct des 100 LED
+  - aperçu en direct des 100 pixels
   - activer ou désactiver chaque scène, durée réglable de 5 à 60 s
   - mode « ↻ Boucle » pour jouer une seule scène en continu
   - luminosité
@@ -25,7 +25,7 @@ aperçu en direct de la bande.
 
 | # | Scène | Description |
 |---|-------|-------------|
-| 1 | 🔥 Le réveil des flammes | Les LED s'allument une à une, des braises jusqu'au feu vif |
+| 1 | 🔥 Le réveil des flammes | Les pixels s'allument un à un, des braises jusqu'au feu vif |
 | 2 | 🩸 La vague maudite | Une tête rouge suivie d'une traînée orange parcourt la bande, trois fois |
 | 3 | ☠️ Le poison | Vert toxique et violet se poursuivent en vagues |
 | 4 | 👻 L'apparition | Une traînée blanche glaciale passe sur un fond violet, aller puis retour |
@@ -41,14 +41,14 @@ Avec les réglages par défaut (8 scènes × 15 s), un cycle complet dure 2 minu
 | Pièce | Notes |
 |-------|-------|
 | Heltec WiFi LoRa 32 V3 | ESP32-S3, OLED SSD1306 128×64 intégré |
-| Bande de 100 LED WS2815 (12 V) | Pilotée en mode `WS2812B` par FastLED, dont le signal est compatible. Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
+| Bande WS2811 (12 V), 300 LED | Une puce WS2811 commande un groupe de 3 LED : la bande compte donc **100 pixels** adressables. Pilotée en mode `WS2812B` par FastLED, dont le signal est compatible. Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
 | Alimentation 12 V | Pour la bande. Choisir l'intensité selon la fiche technique de la bande |
 | Câble USB-C | Programmation et alimentation de la carte |
 
 ## Branchement
 
 ```
-Heltec V3                    Bande WS2815
+Heltec V3                    Bande WS2811
 ---------                    ------------
 GPIO 4  ───────────────────► DIN
 GND     ──────────────────── GND ──┐
@@ -127,8 +127,8 @@ Les constantes en haut de `halloween_web.ino` :
 | Constante | Défaut | Rôle |
 |-----------|--------|------|
 | `DATA_PIN` | `4` | Broche reliée à DIN |
-| `NUM_LEDS` | `100` | Nombre de LED de la bande |
-| `LED_TYPE` | `WS2812B` | Type de puce. Fonctionne avec la WS2815 utilisée; FastLED propose aussi `WS2815` (voir la doc FastLED) |
+| `NUM_LEDS` | `100` | Nombre de pixels adressables, c'est-à-dire de puces WS2811 (300 LED ÷ 3), et non de LED |
+| `LED_TYPE` | `WS2812B` | Type de puce. Fonctionne avec la WS2811 utilisée; FastLED propose aussi `WS2811` (voir la doc FastLED) |
 | `COLOR_ORDER` | `BRG` | Ordre des couleurs. Si le rouge s'affiche en bleu ou en vert, essayer `GRB` ou `RGB` |
 | `FADE_MS` | `1000` | Durée du fondu entre deux scènes (ms) |
 | `brightness` | `170` | Luminosité au démarrage (10 à 255) |
@@ -169,11 +169,11 @@ Renvoie l'état courant en JSON :
 | `t`, `d` | Temps écoulé et durée de la scène (ms) |
 | `b` | Luminosité (10 à 255) |
 | `l` | Scène verrouillée en boucle, ou `-1` |
-| `n` | Nombre de LED |
+| `n` | Nombre de pixels |
 | `en` | Scènes activées (`1`/`0`) |
 | `du` | Durée de chaque scène (s) |
 | `c` | Les trois couleurs, en hexadécimal |
-| `px` | Couleur actuelle de chaque LED, 6 caractères hexadécimaux par LED |
+| `px` | Couleur actuelle de chaque pixel, 6 caractères hexadécimaux par pixel |
 
 ### `GET /set?...`
 

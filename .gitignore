@@ -1,0 +1,8 @@
+# Identifiants Wi-Fi (ne jamais publier)
+secrets.h
+
+# Artefacts de compilation
+build/
+*.bin
+*.elf
+*.map

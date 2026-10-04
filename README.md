@@ -1,6 +1,6 @@
 # 🎃 Halloween LED
 
-Un spectacle d'Halloween pour une bande de 100 LED adressables 12 V, piloté par une carte
+Un spectacle d'Halloween pour une bande de 100 LED adressables **WS2815** (12 V), piloté par une carte
 **Heltec WiFi LoRa 32 V3** (ESP32-S3) avec écran OLED intégré et une interface web
 pour tout contrôler depuis un téléphone.
 
@@ -41,15 +41,15 @@ Avec les réglages par défaut (8 scènes × 15 s), un cycle complet dure 2 minu
 | Pièce | Notes |
 |-------|-------|
 | Heltec WiFi LoRa 32 V3 | ESP32-S3, OLED SSD1306 128×64 intégré |
-| Bande de 100 LED adressables 12 V | Pilotée en mode `WS2812B` par FastLED. Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
+| Bande de 100 LED WS2815 (12 V) | Pilotée en mode `WS2812B` par FastLED, dont le signal est compatible. Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
 | Alimentation 12 V | Pour la bande. Choisir l'intensité selon la fiche technique de la bande |
 | Câble USB-C | Programmation et alimentation de la carte |
 
 ## Branchement
 
 ```
-Heltec V3                    Bande LED 12 V
----------                    --------------
+Heltec V3                    Bande WS2815
+---------                    ------------
 GPIO 4  ───────────────────► DIN
 GND     ──────────────────── GND ──┐
                                    ├── Alimentation 12 V
@@ -128,7 +128,7 @@ Les constantes en haut de `halloween_web.ino` :
 |-----------|--------|------|
 | `DATA_PIN` | `4` | Broche reliée à DIN |
 | `NUM_LEDS` | `100` | Nombre de LED de la bande |
-| `LED_TYPE` | `WS2812B` | Type de puce (voir la doc FastLED) |
+| `LED_TYPE` | `WS2812B` | Type de puce. Fonctionne avec la WS2815 utilisée; FastLED propose aussi `WS2815` (voir la doc FastLED) |
 | `COLOR_ORDER` | `BRG` | Ordre des couleurs. Si le rouge s'affiche en bleu ou en vert, essayer `GRB` ou `RGB` |
 | `FADE_MS` | `1000` | Durée du fondu entre deux scènes (ms) |
 | `brightness` | `170` | Luminosité au démarrage (10 à 255) |

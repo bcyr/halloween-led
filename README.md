@@ -1,6 +1,6 @@
 # 🎃 Halloween LED
 
-Un spectacle d'Halloween pour une bande de 100 LED WS2812B, piloté par une carte
+Un spectacle d'Halloween pour une bande de 100 LED adressables 12 V, piloté par une carte
 **Heltec WiFi LoRa 32 V3** (ESP32-S3) avec écran OLED intégré et une interface web
 pour tout contrôler depuis un téléphone.
 
@@ -41,29 +41,27 @@ Avec les réglages par défaut (8 scènes × 15 s), un cycle complet dure 2 minu
 | Pièce | Notes |
 |-------|-------|
 | Heltec WiFi LoRa 32 V3 | ESP32-S3, OLED SSD1306 128×64 intégré |
-| Bande de 100 LED WS2812B | Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
-| Alimentation 5 V | Prévoir environ 3 à 4 A pour 100 LED à la luminosité par défaut |
+| Bande de 100 LED adressables 12 V | Pilotée en mode `WS2812B` par FastLED. Ordre des couleurs **BRG** sur la bande utilisée (voir [Personnalisation](#personnalisation)) |
+| Alimentation 12 V | Pour la bande. Choisir l'intensité selon la fiche technique de la bande |
 | Câble USB-C | Programmation et alimentation de la carte |
-| *(Recommandé)* Résistance 330 Ω | En série sur la ligne de données |
-| *(Recommandé)* Condensateur 1000 µF | Entre +5 V et GND, au début de la bande |
 
 ## Branchement
 
 ```
-Heltec V3                    Bande WS2812B
----------                    -------------
-GPIO 4  ──[330 Ω]─────────►  DIN
+Heltec V3                    Bande LED 12 V
+---------                    --------------
+GPIO 4  ───────────────────► DIN
 GND     ──────────────────── GND ──┐
-                                   ├── Alimentation 5 V
-                             +5V ──┘
+                                   ├── Alimentation 12 V
+                             +12V ─┘
 ```
 
-- La broche de données est **GPIO 4** (modifiable via `DATA_PIN`).
+- La broche de données est **GPIO 4** (modifiable via `DATA_PIN`), branchée
+  directement sur l'entrée DIN de la bande, sans autre composant : le signal de
+  3,3 V de l'ESP32-S3 suffit pour la bande utilisée.
 - **Les masses (GND) de la carte et de l'alimentation doivent être reliées.**
-- La bande est branchée directement sur la carte : le signal de 3,3 V de l'ESP32-S3
-  suffit pour la bande utilisée.
-- Évitez d'alimenter 100 LED par la broche 5 V de la carte : utilisez une
-  alimentation externe adaptée.
+- La carte est alimentée par USB. **Ne jamais relier le +12 V à la carte** : seule
+  la bande reçoit le 12 V.
 
 ## Installation
 
